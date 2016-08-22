@@ -97,8 +97,11 @@ namespace SocksTun
 		// simultaneously.
 		//=========================================================
 
-		private const string TAP_COMPONENT_ID = "tap0801";
-
+		//private const string TAP_COMPONENT_ID = "tap0801";
+		
+		//change id to tap0901 for the last driver by SimonTheCoder
+                private const string TAP_COMPONENT_ID = "tap0901";
+		
 		//=========================================================
 		// .Net implementation - based on code from
 		// http://www.varsanofiev.com/inside/using_tuntap_under_windows.htm
@@ -280,7 +283,8 @@ namespace SocksTun
 
 		private T DeviceIoControl<T>(uint ioctl, object data)
 		{
-			var nInBufferSize = data != null ? data is byte[] ? ((byte[])data).Length : Marshal.SizeOf(data) : 0;
+			//DeviceIOControl do not accept 0 size in args. change default(0) to 1. (Maybe in win10 only)
+			var nInBufferSize = data != null ? data is byte[] ? ((byte[])data).Length : Marshal.SizeOf(data) : 1;
 			var pInBuffer = Marshal.AllocHGlobal(nInBufferSize);
 			var nOutBufferSize = Marshal.SizeOf(typeof(T));
 			var pOutBuffer = Marshal.AllocHGlobal(nOutBufferSize);
